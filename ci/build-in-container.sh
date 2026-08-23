@@ -10,8 +10,16 @@ printf '%s\n' 'deb https://packages.termux.dev/apt/termux-main stable main' > "$
 apt update -y
 apt install -y binutils clang curl file git libc++ ndk-sysroot nodejs-lts npm tar xz-utils zig
 
-curl -fsSL https://raw.githubusercontent.com/bd-loser/bun-termux/main/scripts/install.sh | bash
-export PATH="$HOME/.bun/bin:$PATH"
+# Pin the bun build instead of floating on install.sh: 1.4.0-patched
+# resolves the workspace differently inside termux-docker — typescript
+# never lands under packages/core/node_modules, so declaration generation
+# dies with "node_modules/.bin/tsc: No such file or directory". The same
+# binary works fine on a real device, so this is a container-only break.
+# 1.3.14-patched is the build every successful release so far used.
+curl -fsSL -o "$PREFIX/tmp/bun.deb" \
+  "https://github.com/bd-loser/bun-termux/releases/download/v1.3.14-patched/bun_1.3.14-patched_aarch64.deb"
+dpkg -i "$PREFIX/tmp/bun.deb"
+rm -f "$PREFIX/tmp/bun.deb"
 
 zig version
 
