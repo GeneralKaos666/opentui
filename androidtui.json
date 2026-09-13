@@ -4,7 +4,7 @@
     "tag": "v0.5.11",
     "commit": "6b9863ea7c5fae22bfebb23c242ddcc4c2b0aa0e"
   },
-  "releaseVersion": "0.5.11-android.1",
+  "releaseVersion": "0.5.11",
   "packages": [
     "core-android-arm64",
     "core",
